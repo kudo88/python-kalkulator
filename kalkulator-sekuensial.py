@@ -1,4 +1,7 @@
 import os
+import platform
+
+bersih = 'cls' if platform.system() == 'Windows' else 'clear'
 
 cmd = ('+','-','*','/','=','M+','M-','MR','MC',None,'','RESET')
 memori = 0
@@ -13,6 +16,13 @@ def reset():
     isi,tampil = '',''
     opr = None
     selesai = False
+
+def isfloat(value):
+  try:
+    float(value)
+    return True
+  except ValueError:
+    return False
 
 def hitung(par_isi):
     global opr, tampil, hasil, memori
@@ -35,7 +45,7 @@ def hitung(par_isi):
 
 def parse(par_isi):
     global opr, tampil, hasil
-    if par_isi.isdigit():
+    if isfloat(par_isi):
         if opr == None:
             hasil = float(par_isi)
             tampil += f' {par_isi}'
@@ -53,7 +63,7 @@ while not selesai:
     elif isi == 'MC':
         memori = 0
         print(f'Isi memori sudah dibersihkan')
-    if (not isi.isdigit()) and (not isi in cmd):
+    if (not isfloat(isi)) and (not isi in cmd):
         print('Masukkan angka / perintah dengan benar.')
     if isi == 'RESET':
         reset
@@ -64,4 +74,4 @@ while not selesai:
         print(f'Hasil Kalkulasi > {tampil} = {hasil}')
         selesai = True
     else:
-        os.system('cls')
+        os.system(bersih)
